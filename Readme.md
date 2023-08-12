@@ -57,3 +57,16 @@ class HelloBrew < Formula
   end
 end
 ```
+
+## Create release
+
+```bash
+ gh release create 2.0 ~/HelloBrew/tars/hello-brew.tar.gz --title "Release 2.0" --notes "Release"
+```
+
+## Verify sha256
+
+```bash
+curl -L "https://github.com/<user>/HelloBrew2/releases/download/2.0/hello-brew.tar.gz" -o hello-brew.tar.gz
+sha256sum hello-brew.tar.gz
+```
