@@ -59,7 +59,7 @@ jobs:
         with:
           repository: jackinf/homebrew-tap
           ref: main
-          token: ${{ secrets.GITHUB_TOKEN }} # Make sure this token has necessary permissions
+          token: ${{ secrets.TAPPY }} # Make sure this token has necessary permissions
 
       - name: Update Formula
         run: |
