@@ -41,7 +41,9 @@ jobs:
         with:
           tag_name: v${{ env.VERSION }}
           release_name: Release v${{ env.VERSION }}
-          body: Auto release for version v${{ env.VERSION }} with sha $SHA256
+          body: |
+            Release of version ${{ env.VERSION }}
+            SHA256 checksum: ${{ env.SHA256 }}
           draft: false
           prerelease: false
 
