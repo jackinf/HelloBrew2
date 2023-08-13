@@ -27,7 +27,7 @@ jobs:
         run: |
           mkdir temp
           rsync -av --progress . temp --exclude temp --exclude .git
-          tar -cvzf source_code_v${{ env.VERSION }}.tar.gz -C temp .
+          tar -cvzf hello_brew_v${{ env.VERSION }}.tar.gz -C temp .
           rm -rf temp
 
       - name: Create Release
@@ -48,17 +48,31 @@ jobs:
         uses: actions/upload-release-asset@v1
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./source_code_v${{ env.VERSION }}.tar.gz
-          asset_name: source_code_v${{ env.VERSION }}.tar.gz
+          asset_path: ./hello_brew_v${{ env.VERSION }}.tar.gz
+          asset_name: hello_brew_v${{ env.VERSION }}.tar.gz
           asset_content_type: application/gzip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Checkout homebrew-tap repository
+        uses: actions/checkout@v2
+        with:
+          repository: jackinf/homebrew-tap
+          ref: main
+          token: ${{ secrets.GITHUB_TOKEN }} # Make sure this token has necessary permissions
+
       - name: Update Formula
-        if: env.VERSION != ''
         run: |
           VERSION=${{ env.VERSION }}
           SHA256=$(sha256sum source_code_v${VERSION}.tar.gz | awk '{ print $1 }')
           URL="https://github.com/jackinf/HelloBrew2/releases/download/${VERSION}/hello-brew.tar.gz"
-          sed -i "s|url \".*\"|url \"$URL\"|" ./path/to/Formula/hello-brew.rb
-          sed -i "s|sha256 \".*\"|sha256 \"$SHA256\"|" ./path/to/Formula/hello-brew.rb
+          sed -i "s|url \".*\"|url \"$URL\"|" ./Formula/hello-brew.rb
+          sed -i "s|sha256 \".*\"|sha256 \"$SHA256\"|" ./Formula/hello-brew.rb
+
+      - name: Commit and push changes
+        run: |
+          git config --local user.email "actions@github.com"
+          git config --local user.name "GitHub Actions"
+          git add ./Formula/hello-brew.rb
+          git commit -m "Update hello-brew formula to version ${{ env.VERSION }}"
+          git push origin main
