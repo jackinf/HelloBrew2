@@ -27,8 +27,8 @@ jobs:
         run: |
           mkdir temp
           rsync -av --progress . temp --exclude temp --exclude .git
-          tar -cvzf hello_brew_v${{ env.VERSION }}.tar.gz -C temp .
-          SHA256=$(sha256sum hello_brew_v${VERSION}.tar.gz | awk '{ print $1 }')
+          tar -cvzf hello_brew.tar.gz -C temp .
+          SHA256=$(sha256sum hello_brew.tar.gz | awk '{ print $1 }')
           echo "SHA256=$SHA256" >> $GITHUB_ENV
           rm -rf temp
 
