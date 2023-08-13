@@ -22,13 +22,14 @@ jobs:
           fi
           echo "VERSION=$VERSION" >> $GITHUB_ENV
 
-      - name: Checkout code
-        uses: actions/checkout@v2
-
       - name: Create .tar.gz of the source files
         if: env.VERSION != ''
         run: |
-          tar -cvzf source_code_v${{ env.VERSION }}.tar.gz --exclude='.git' .
+          mkdir temp
+          cp -r ./* temp/
+          rm -rf temp/.git
+          tar -cvzf source_code_v${{ env.VERSION }}.tar.gz -C temp .
+          rm -rf temp
 
       - name: Create Release
         if: env.VERSION != ''
