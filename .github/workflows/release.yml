@@ -68,7 +68,7 @@ jobs:
       - name: Update Formula
         run: |
           VERSION=${{ env.VERSION }}
-          URL="https://github.com/jackinf/HelloBrew2/releases/download/${VERSION}/hello-brew.tar.gz"
+          URL="https://github.com/jackinf/HelloBrew2/releases/download/v${VERSION}/hello_brew.tar.gz"
           sed -i "s|url \".*\"|url \"$URL\"|" ./Formula/hello-brew.rb
           sed -i "s|sha256 \".*\"|sha256 \"$SHA256\"|" ./Formula/hello-brew.rb
 
