@@ -28,6 +28,8 @@ jobs:
           mkdir temp
           rsync -av --progress . temp --exclude temp --exclude .git
           tar -cvzf hello_brew_v${{ env.VERSION }}.tar.gz -C temp .
+          SHA256=$(sha256sum hello_brew_v${VERSION}.tar.gz | awk '{ print $1 }')
+          echo "SHA256=$SHA256" >> $GITHUB_ENV
           rm -rf temp
 
       - name: Create Release
@@ -39,7 +41,7 @@ jobs:
         with:
           tag_name: v${{ env.VERSION }}
           release_name: Release v${{ env.VERSION }}
-          body: Auto release for version v${{ env.VERSION }}
+          body: Auto release for version v${{ env.VERSION }} with sha $SHA256
           draft: false
           prerelease: false
 
@@ -64,7 +66,7 @@ jobs:
       - name: Update Formula
         run: |
           VERSION=${{ env.VERSION }}
-          SHA256=$(sha256sum hello_brew_v${VERSION}.tar.gz | awk '{ print $1 }')
+#          SHA256=$(sha256sum hello_brew_v${VERSION}.tar.gz | awk '{ print $1 }')
           URL="https://github.com/jackinf/HelloBrew2/releases/download/${VERSION}/hello-brew.tar.gz"
           sed -i "s|url \".*\"|url \"$URL\"|" ./Formula/hello-brew.rb
           sed -i "s|sha256 \".*\"|sha256 \"$SHA256\"|" ./Formula/hello-brew.rb
