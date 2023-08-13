@@ -64,7 +64,7 @@ jobs:
       - name: Update Formula
         run: |
           VERSION=${{ env.VERSION }}
-          SHA256=$(sha256sum source_code_v${VERSION}.tar.gz | awk '{ print $1 }')
+          SHA256=$(sha256sum hello_brew_v${VERSION}.tar.gz | awk '{ print $1 }')
           URL="https://github.com/jackinf/HelloBrew2/releases/download/${VERSION}/hello-brew.tar.gz"
           sed -i "s|url \".*\"|url \"$URL\"|" ./Formula/hello-brew.rb
           sed -i "s|sha256 \".*\"|sha256 \"$SHA256\"|" ./Formula/hello-brew.rb
