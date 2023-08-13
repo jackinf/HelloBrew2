@@ -56,8 +56,6 @@ jobs:
 
       - name: Checkout homebrew-tap repository
         uses: actions/checkout@v2
-        env:
-          TAPPY: ${{ secrets.TAPPY }}
         with:
           repository: jackinf/homebrew-tap
           ref: main
